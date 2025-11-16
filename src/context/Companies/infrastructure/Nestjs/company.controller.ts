@@ -16,14 +16,14 @@ export class CompanyController {
   ) {}
 
   @Get('/companies-added')
-  async companiesAdded(): Promise<CompanyResponseDto[]> {
+  async companiesAdded(): Promise<any[]> {
     return this.getCompaniesAdded.run();
   }
 
   @Get('/company-transfers/:idCompany')
   async companyTransfers(
     @Param('idCompany') idCompany: string,
-  ): Promise<CompanyResponseDto[]> {
+  ): Promise<any[]> {
     return this.getCompanyTransfers.run(idCompany);
   }
 
@@ -40,7 +40,6 @@ export class CompanyController {
       isActive,
     } = createCompanyDTO;
     return this.createCompany.run(
-      '',
       legalName,
       businessName,
       taxId,
@@ -48,6 +47,7 @@ export class CompanyController {
       new Date(),
       isActive,
       contactEmail,
+      undefined,
       null,
       contactPhone,
       address,

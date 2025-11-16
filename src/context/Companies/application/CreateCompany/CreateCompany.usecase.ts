@@ -6,7 +6,6 @@ export class CreateCompany {
   constructor(private readonly repository: CompanyRepository) {}
   // El metodo run recibe valores primitivos.
   async run(
-    id: string,
     legalName: string,
     businessName: string,
     taxId: string,
@@ -14,12 +13,12 @@ export class CreateCompany {
     adhesionDate: Date,
     isActive: boolean,
     contactEmail: string,
+    id: string | undefined,
     lastTransferDate?: Date | null,
     contactPhone?: string,
     address?: string,
   ): Promise<void> {
     const company = new Company(
-      id,
       legalName,
       businessName,
       taxId,
@@ -27,6 +26,7 @@ export class CreateCompany {
       adhesionDate,
       isActive,
       contactEmail,
+      id,
       lastTransferDate || null,
       contactPhone || '',
       address || '',

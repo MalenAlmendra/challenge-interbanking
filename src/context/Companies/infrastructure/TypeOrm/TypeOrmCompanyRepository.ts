@@ -14,7 +14,6 @@ export class TypeOrmCompanyRepository implements CompanyRepository {
 
   private mapToDomain(company: TypeOrmCompanyEntity) {
     return new Company(
-      company.id,
       company.legalName,
       company.businessName,
       company.taxId,
@@ -22,6 +21,7 @@ export class TypeOrmCompanyRepository implements CompanyRepository {
       company.adhesionDate,
       company.isActive,
       company.contactEmail,
+      company.id,
       company.lastTransferDate || null,
       company.contactPhone || '',
       company.address || '',
@@ -37,10 +37,10 @@ export class TypeOrmCompanyRepository implements CompanyRepository {
 
     const companies = await this.repository
       .createQueryBuilder('company')
-      .where('company.id === :id', { idCompany })
+      .where('company.id = :id', { id: idCompany })
       .andWhere('company.lastTransferDate BETWEEN :from AND :to', {
-        today,
-        lastMonthDate,
+        from: lastMonthDate,
+        to: today,
       })
       .getMany();
 
@@ -54,9 +54,9 @@ export class TypeOrmCompanyRepository implements CompanyRepository {
 
     const companies = await this.repository
       .createQueryBuilder('company')
-      .where('company.adhesisonDate BETWEEN :from AND :to', {
-        today,
-        lastMonthDate,
+      .where('company.adhesionDate BETWEEN :from AND :to', {
+        from: lastMonthDate,
+        to: today ,
       })
       .getMany();
 
@@ -64,8 +64,7 @@ export class TypeOrmCompanyRepository implements CompanyRepository {
   }
 
   async createCompany(company: Company): Promise<void> {
-    this.repository.save({
-      id: company.id,
+    const entity: Partial<TypeOrmCompanyEntity> = {
       legalName: company.legalName,
       businessName: company.businessName,
       taxId: company.taxId,
@@ -76,6 +75,12 @@ export class TypeOrmCompanyRepository implements CompanyRepository {
       lastTransferDate: company.lastTransferDate || undefined,
       contactPhone: company.contactPhone || '',
       address: company.address || '',
-    });
+    };
+
+    if (company.id) {
+      entity.id = company.id;
+    }
+
+    this.repository.save(entity);
   }
 }

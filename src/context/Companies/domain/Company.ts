@@ -1,7 +1,6 @@
 import { CompanyType } from './companyType.enum';
 
 export class Company {
-  id: string;
   legalName: string;
   businessName: string;
   taxId: string;
@@ -9,12 +8,12 @@ export class Company {
   adhesionDate: Date;
   isActive: boolean;
   contactEmail: string;
+  id?: string;
   lastTransferDate?: Date | null;
   contactPhone?: string;
   address?: string;
 
   constructor(
-    id: string,
     legalName: string,
     businessName: string,
     taxId: string,
@@ -22,6 +21,7 @@ export class Company {
     adhesionDate: Date,
     isActive: boolean,
     contactEmail: string,
+    id?: string | undefined,
     lastTransferDate?: Date | null,
     contactPhone?: string,
     address?: string,
@@ -33,6 +33,7 @@ export class Company {
     this.adhesionDate = adhesionDate;
     this.isActive = isActive;
     this.contactEmail = contactEmail;
+    this.id = id;
     this.lastTransferDate = lastTransferDate || null;
     this.contactPhone = contactPhone || '';
     this.address = address || '';
@@ -40,7 +41,6 @@ export class Company {
 
   public toPlainObject() {
     return {
-      id: this.id,
       legalName: this.legalName,
       businessName: this.businessName,
       taxId: this.taxId,
@@ -48,6 +48,7 @@ export class Company {
       adhesionDate: this.adhesionDate,
       isActive: this.isActive,
       contactEmail: this.contactEmail,
+      id: this.id,
       lastTransferDate: this.lastTransferDate,
       contactPhone: this.contactPhone,
       address: this.address,
