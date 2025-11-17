@@ -28,17 +28,13 @@ export class TypeOrmCompanyRepository implements CompanyRepository {
     );
   }
 
-  async getCompanyTransfers(idCompany: string): Promise<Company[]> {
-    //la fecha de busqueda debe ser de 30 días hacia atras a partir de la fecha actual.
-    //se debe realizar la llamada a la tabla de transferencias
-
+  async getCompanyTransfers(): Promise<Company[]> {
     const today = new Date();
     const lastMonthDate = subDays(today, 30);
 
     const companies = await this.repository
       .createQueryBuilder('company')
-      .where('company.id = :id', { id: idCompany })
-      .andWhere('company.lastTransferDate BETWEEN :from AND :to', {
+      .where('company.lastTransferDate BETWEEN :from AND :to', {
         from: lastMonthDate,
         to: today,
       })
@@ -48,7 +44,6 @@ export class TypeOrmCompanyRepository implements CompanyRepository {
   }
 
   async getLastCompaniesAdded(): Promise<Company[]> {
-    //la fecha de busqueda debe ser de 30 días hacia atras a partir de la fecha actual.
     const today = new Date();
     const lastMonthDate = subDays(today, 30);
 

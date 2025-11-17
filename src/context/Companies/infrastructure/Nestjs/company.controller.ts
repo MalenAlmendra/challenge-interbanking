@@ -1,8 +1,7 @@
-import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
 import { CreateCompany } from '../../application/CreateCompany/CreateCompany.usecase';
 import { GetCompaniesAdded } from '../../application/GetCompaniesAdded/GetCompaniesAdded.usecase';
-import { CreateCompanyDto } from './CreateCompany/CreateCompany.dto';
-import { CompanyResponseDto } from './dto/company.response.dto';
+import { CompanyResponseDto, CreateCompanyDto } from './Company.dto';
 import { GetCompanyTransfers } from '../../application/GetCompanyTransfers/GetCompanyTransfers.usecase';
 
 @Controller('company')
@@ -16,15 +15,13 @@ export class CompanyController {
   ) {}
 
   @Get('/companies-added')
-  async companiesAdded(): Promise<any[]> {
+  async companiesAdded(): Promise<CompanyResponseDto[]> {
     return this.getCompaniesAdded.run();
   }
 
   @Get('/company-transfers/:idCompany')
-  async companyTransfers(
-    @Param('idCompany') idCompany: string,
-  ): Promise<any[]> {
-    return this.getCompanyTransfers.run(idCompany);
+  async companyTransfers(): Promise<CompanyResponseDto[]> {
+    return this.getCompanyTransfers.run();
   }
 
   @Post('/create')

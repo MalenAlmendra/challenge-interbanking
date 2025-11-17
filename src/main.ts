@@ -1,24 +1,61 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.createApplicationContext(AppModule);
 
-  const config = new DocumentBuilder()
-    .setTitle('Challenge Interbanking')
-    .setDescription(
-      'This company API since to be part of a challenge for Interbanking',
-    )
-    .setVersion('1.0')
-    .build();
-  const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, documentFactory);
+  app.enableShutdownHooks();
 
-  const port = process.env.PORT ?? 3000;
+  const shutdownSignals: NodeJS.Signals[] = ['SIGINT', 'SIGTERM'];
 
-  await app.listen(port, () => {
-    console.log(`Conectado al puerto ${port}`);
-  });
+  shutdownSignals.forEach((signal) =>
+    process.on(signal, async () => {
+      console.log(`Signal ${signal} received. Closing the application...`);
+      await app.close();
+      process.exit(0);
+    }),
+  );
+
+  //MOCK DE CREACIÓN
+  const newCompanyMock = {
+    legalName: 'Malen Almendra',
+    businessName: 'Le Pingouin Studio Code',
+    contactEmail: 'lepinoguin@gmail.com',
+    taxId: '27-35886703-6',
+    type: 'PYME',
+    address: 'Villegas 932',
+    contactPhone: '2914374737',
+    isActive: true,
+  };
+
+  //Este fragmento de codigo se introduce para que se pueda ver el funcionamiento de los endpoints
+
+  // ENDPOINTS
+  //GET COMPANIES ADDED
+  const useCase = app.get('GetCompaniesAdded');
+  const result1 = await useCase.run();
+  console.log('Empresas encontradas en los últimos 30 días:', result1);
+  
+  //CREATE COMPANY
+  // const createCompanyUseCase = app.get('CreateCompany');
+  // await createCompanyUseCase.run(
+  //   newCompanyMock.legalName,
+  //   newCompanyMock.businessName,
+  //   newCompanyMock.taxId,
+  //   newCompanyMock.type,
+  //   new Date(),
+  //   newCompanyMock.isActive,
+  //   newCompanyMock.contactEmail,
+  //   undefined,
+  //   null,
+  //   newCompanyMock.contactPhone,
+  //   newCompanyMock.address,
+  // );
+  // console.log('Empresa Creada!!');
+
+  //GET COMPANY TRANSFERS
+  const getCompanyTransfersUseCase= app.get('GetCompanyTransfers')
+  const result3 = await getCompanyTransfersUseCase.run('a7f7dd53-06e1-43b7-9e37-2d26e234cd44');
+  console.log('Ultima Transferencia del mes de la empresa:', result3);
 }
 bootstrap();

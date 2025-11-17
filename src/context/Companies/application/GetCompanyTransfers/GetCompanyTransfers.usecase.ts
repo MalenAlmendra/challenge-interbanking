@@ -4,7 +4,7 @@ import type { CompanyRepository } from '../../domain/CompanyRepository';
 export class GetCompanyTransfers {
   constructor(private readonly repository: CompanyRepository) {}
 
-  async run(idCompany: string): Promise<Company[]> {
-    return this.repository.getCompanyTransfers(idCompany);
+  async run(): Promise<Company[]> {
+    return this.repository.getCompanyTransfers();
   }
 }

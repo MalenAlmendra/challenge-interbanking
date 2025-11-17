@@ -1,13 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsBoolean,
+  IsDate,
   IsEmail,
   IsEnum,
   IsOptional,
   IsString,
+  IsUUID,
   Length,
 } from 'class-validator';
-import { CompanyType } from '../../../domain/companyType.enum';
+import { CompanyType } from '../../domain/companyType.enum';
 
 export class CreateCompanyDto {
   @ApiProperty({ example: 'INTERBANKING S.A.' })
@@ -57,4 +59,40 @@ export class CreateCompanyDto {
   })
   @IsBoolean()
   isActive: boolean;
+}
+
+export class CompanyResponseDto {
+
+  @IsString()
+  legalName: string;
+
+  @IsString()
+  businessName: string;
+
+  @IsString()
+  taxId: string;
+
+  @IsEnum(CompanyType)
+  type: CompanyType;
+
+  @IsDate()
+  adhesionDate: Date;
+
+  @IsBoolean()
+  isActive: boolean;
+
+  @IsString()
+  contactEmail: string;
+  
+  @IsUUID()
+  id?: string | undefined;
+
+  @IsDate()
+  lastTransferDate?: Date | null;
+
+  @IsString()
+  contactPhone?: string;
+
+  @IsString()
+  address?: string;
 }

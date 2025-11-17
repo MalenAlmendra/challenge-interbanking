@@ -1,4 +1,5 @@
 import { CompanyType } from './companyType.enum';
+import { CompanyValidations } from './CompanyValidations';
 
 export class Company {
   legalName: string;
@@ -26,17 +27,28 @@ export class Company {
     contactPhone?: string,
     address?: string,
   ) {
-    this.legalName = legalName;
-    this.businessName = businessName;
-    this.taxId = taxId;
+    const validations = new CompanyValidations();
+    validations.validateMandatoryStrings(
+      legalName,
+      businessName,
+      taxId,
+      contactEmail,
+    );
+    validations.validateAdhesionDate(adhesionDate);
+    validations.validateCompanyType(type);
+    validations.validateOptionalDates(lastTransferDate);
+
+    this.legalName = legalName.trim();
+    this.businessName = businessName.trim();
+    this.taxId = taxId.trim();
     this.type = type;
     this.adhesionDate = adhesionDate;
     this.isActive = isActive;
-    this.contactEmail = contactEmail;
+    this.contactEmail = contactEmail.trim();
     this.id = id;
     this.lastTransferDate = lastTransferDate || null;
-    this.contactPhone = contactPhone || '';
-    this.address = address || '';
+    this.contactPhone = (contactPhone || '').trim();
+    this.address = (address || '').trim();
   }
 
   public toPlainObject() {
