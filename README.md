@@ -16,7 +16,7 @@
 Ejemplo de `.env` local:
 
 ```env
-DATABASE_URL=postgresql://user:password@localhost:5432/challenge_interbanking?sslmode=disable
+DATABASE_URL=DATABASE_URL=postgresql://postgres.moapvggmuasajjoyhfrc:so0O8g65wxPoSnvo@aws-0-us-west-2.pooler.supabase.com:5432/postgres
 ```
 
 La configuración de TypeORM se carga desde `AppModule` y utiliza esta URL para registrar la entidad `company`. Asegurate de tener el esquema creado o habilitar `synchronize` en el `TypeOrmModule` si querés que se genere automáticamente.
