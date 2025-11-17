@@ -8,6 +8,19 @@
 <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
 </p>
 
+## Requisitos previos
+
+- Node.js 18+ y npm
+- Base de datos PostgreSQL accesible y una variable de entorno `DATABASE_URL` con el string de conexión.
+
+Ejemplo de `.env` local:
+
+```env
+DATABASE_URL=postgresql://user:password@localhost:5432/challenge_interbanking?sslmode=disable
+```
+
+La configuración de TypeORM se carga desde `AppModule` y utiliza esta URL para registrar la entidad `company`. Asegurate de tener el esquema creado o habilitar `synchronize` en el `TypeOrmModule` si querés que se genere automáticamente.
+
 ## Instalación de proyecto
 
 ```bash
@@ -30,6 +43,16 @@ $ npm run start:dev
 ### Descripción General
 
 La tarea consiste en construir APIs que permitan gestionar información sobre empresas y sus transferencias. La solución deberá ser clara, mantenible, escalable y escrita con buenas prácticas (Clean Code, separación de responsabilidades, claridad en los nombres, etc.)
+
+### Endpoints disponibles
+
+| Método | Ruta | Descripción |
+| --- | --- | --- |
+| `POST` | `/company/create` | Crea una empresa validando los datos con `class-validator` y persistiéndolos vía TypeORM. |
+| `GET` | `/company/companies-added` | Lista empresas con fecha de adhesión en los últimos 30 días. |
+| `GET` | `/company/company-transfers/:idCompany` | Obtiene las empresas que registraron transferencias en los últimos 30 días. |
+
+> Los controladores NestJS están definidos en `src/context/Companies/infrastructure/Nestjs/company.controller.ts`. Los DTO con ejemplos de payload se encuentran en `src/context/Companies/infrastructure/Nestjs/Company.dto.ts`.
 
 ## Paso a Paso realizado con arquitectura hexagonal
 
