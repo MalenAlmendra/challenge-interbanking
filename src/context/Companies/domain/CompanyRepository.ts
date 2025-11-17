@@ -4,4 +4,5 @@ export interface CompanyRepository {
   createCompany(company: Company): Promise<void>;
   getCompanyTransfers(): Promise<Company[]>;
   getLastCompaniesAdded(): Promise<Company[]>;
+  findByTaxId(taxId: string): Promise<Company | null>;
 }

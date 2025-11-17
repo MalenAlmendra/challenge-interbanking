@@ -1,6 +1,7 @@
 import { Company } from '../../domain/Company';
 import type { CompanyRepository } from '../../domain/CompanyRepository';
 import { CompanyType } from '../../domain/companyType.enum';
+import { InvalidCompanyDataException } from '../../domain/InvalidCompanyData.exception';
 
 export class CreateCompany {
   constructor(private readonly repository: CompanyRepository) {}
@@ -31,6 +32,15 @@ export class CreateCompany {
       contactPhone || '',
       address || '',
     );
+
+    const existingCompany = await this.repository.findByTaxId(company.taxId);
+
+    if (existingCompany) {
+      throw new InvalidCompanyDataException(
+        `Company with taxId ${company.taxId} already exists`,
+      );
+    }
+
     return this.repository.createCompany(company);
   }
 }

@@ -16,19 +16,21 @@ async function bootstrap() {
     }),
   );
 
-  //MOCK DE CREACIÓN
+  
+
+//A partir de acá, se introduce codigo de prueba para que se pueda ver el funcionamiento de los endpoints sin el HTTPServer. A su ves, se puede probar la creación de los usuarios descomentando el codig Create Company.
+
+//MOCK DE CREACIÓN
   const newCompanyMock = {
-    legalName: 'Malen Almendra',
-    businessName: 'Le Pingouin Studio Code',
-    contactEmail: 'lepinoguin@gmail.com',
-    taxId: '27-35886703-6',
+    legalName: 'Juan Perez',
+    businessName: 'La casita del código',
+    contactEmail: 'lacasitadelcodigo@gmail.com',
+    taxId: '23-16234987-1',
     type: 'PYME',
-    address: 'Villegas 932',
-    contactPhone: '2914374737',
+    address: 'Calle Dorrego 2030',
+    contactPhone: '29260987294',
     isActive: true,
   };
-
-  //Este fragmento de codigo se introduce para que se pueda ver el funcionamiento de los endpoints
 
   // ENDPOINTS
   //GET COMPANIES ADDED
@@ -36,6 +38,12 @@ async function bootstrap() {
   const result1 = await useCase.run();
   console.log('Empresas encontradas en los últimos 30 días:', result1);
   
+
+  //GET COMPANY TRANSFERS
+  const getCompanyTransfersUseCase= app.get('GetCompanyTransfers')
+  const result3 = await getCompanyTransfersUseCase.run('a7f7dd53-06e1-43b7-9e37-2d26e234cd44');
+  console.log('Ultima Transferencia del mes de la empresa:', result3);
+
   //CREATE COMPANY
   // const createCompanyUseCase = app.get('CreateCompany');
   // await createCompanyUseCase.run(
@@ -53,9 +61,5 @@ async function bootstrap() {
   // );
   // console.log('Empresa Creada!!');
 
-  //GET COMPANY TRANSFERS
-  const getCompanyTransfersUseCase= app.get('GetCompanyTransfers')
-  const result3 = await getCompanyTransfersUseCase.run('a7f7dd53-06e1-43b7-9e37-2d26e234cd44');
-  console.log('Ultima Transferencia del mes de la empresa:', result3);
 }
 bootstrap();

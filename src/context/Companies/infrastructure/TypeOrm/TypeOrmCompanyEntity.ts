@@ -12,7 +12,7 @@ export class TypeOrmCompanyEntity {
   @Column()
   businessName: string;
 
-  @Column()
+  @Column({ unique: true })
   taxId: string;
 
   @Column({ type: 'enum', enum: CompanyType, enumName: 'company_type' })

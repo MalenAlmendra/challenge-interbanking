@@ -5,6 +5,8 @@ import { Company } from '../../domain/Company';
 import { TypeOrmCompanyEntity } from './TypeOrmCompanyEntity';
 import { Injectable } from '@nestjs/common';
 import { subDays } from 'date-fns';
+import { InvalidCompanyDataException } from '../../domain/InvalidCompanyData.exception';
+
 @Injectable()
 export class TypeOrmCompanyRepository implements CompanyRepository {
   constructor(
@@ -51,14 +53,28 @@ export class TypeOrmCompanyRepository implements CompanyRepository {
       .createQueryBuilder('company')
       .where('company.adhesionDate BETWEEN :from AND :to', {
         from: lastMonthDate,
-        to: today ,
+        to: today,
       })
       .getMany();
 
     return companies.map((company) => this.mapToDomain(company));
   }
 
+  async findByTaxId(taxId: string): Promise<Company | null> {
+    const company = await this.repository.findOne({ where: { taxId } });
+
+    return company ? this.mapToDomain(company) : null;
+  }
+
   async createCompany(company: Company): Promise<void> {
+    const existingCompany = await this.findByTaxId(company.taxId);
+
+    if (existingCompany) {
+      throw new InvalidCompanyDataException(
+        `Company with taxId ${company.taxId} already exists`,
+      );
+    }
+
     const entity: Partial<TypeOrmCompanyEntity> = {
       legalName: company.legalName,
       businessName: company.businessName,

@@ -11,7 +11,7 @@
 ## Requisitos previos
 
 - Node.js 18+ y npm
-- Base de datos PostgreSQL accesible y una variable de entorno `DATABASE_URL` con el string de conexión.
+- Una variable de entorno `DATABASE_URL` con el string de conexión.
 
 Ejemplo de `.env` local:
 
@@ -35,6 +35,20 @@ $ npm run start
 
 # watch mode
 $ npm run start:dev
+
+```
+
+## Testear el proyecto
+
+```bash
+
+$ npm test
+
+$ npm run test:watch
+
+$ npm run test:cov
+
+$ npm run test:debug
 
 ```
 
